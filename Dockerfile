@@ -13,17 +13,14 @@ RUN npm install
 # Copy the entire project to the working directory
 COPY . .
 
-# Build the Angular app
-RUN npm run build --prod
+# Build the Angular app (production build)
+RUN ng build
 
 # Use a lighter image for serving the Angular app
 FROM nginx:1-alpine-slim
 
 # Copy the build artifacts from the 'build' stage to the nginx server
 COPY --from=build /app/dist/keyword-location /usr/share/nginx/html
-
-# Expose port 80 for the nginx server
-EXPOSE 80
 
 # Start the nginx server when the container starts
 CMD ["nginx", "-g", "daemon off;"]

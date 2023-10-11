@@ -2,12 +2,13 @@ steps:
   # Step 1: Install dependencies and build the Angular app
   - name: "gcr.io/cloud-builders/npm"
     args: ["install"]
+
   - name: "gcr.io/cloud-builders/npm"
-    args: ["run", "build"] # This assumes you have a "build" script in your package.json that runs ng build
+    args: ["run", "build"] # Assuming you have a "build" script in your package.json that runs ng build
 
   # Step 2: Build the Docker image with NGINX server serving the Angular app
   - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-t", "keyword-location", "."]
+    args: ["build", "-t", "gcr.io/keyword-location-app/keyword-location", "."]
 
   # Step 3: Deploy the app to Google Cloud Run
   - name: "gcr.io/cloud-builders/gcloud"
@@ -17,7 +18,7 @@ steps:
         "deploy",
         "keyword-location",
         "--image",
-        "keyword-location",
+        "gcr.io/keyword-location-app/keyword-location",
         "--platform",
         "managed",
         "--region",
