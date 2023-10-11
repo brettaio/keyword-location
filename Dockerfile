@@ -16,20 +16,17 @@ RUN npm install
 # Copy the entire project to the working directory
 COPY . .
 
-# Build the Angular app (production build)
+# Build the Angular app
 RUN ng build
 
 # Use a lighter image for serving the Angular app
 FROM nginx:1-alpine
 
-# Copy the Nginx configuration file (optional, for customization)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
 # Copy the build artifacts from the 'build' stage to the nginx server
 COPY --from=build /app/dist/keyword-location /usr/share/nginx/html
 
-# Expose port 8080 for the nginx server
-EXPOSE 8080
+# Expose port 80 for the nginx server
+EXPOSE 80
 
 # Start the nginx server when the container starts
 CMD ["nginx", "-g", "daemon off;"]
